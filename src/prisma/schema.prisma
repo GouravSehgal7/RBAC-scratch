@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+
+model Roles {
+  id Int @unique @id @default(autoincrement())
+  name String @unique
+  users UserData[]
+  rolepermission Permission[]
+}
+
+model Permission {
+  id Int @id @default(autoincrement())
+  attribute String
+  action String
+  role Roles[]
+  @@unique([attribute,action])
+}
+
+// model RolePermission {
+//   id Int @id @default(autoincrement())
+//   roleid Int
+//   permissionid Int
+//   role Roles @relation(fields: [roleid], references: [id])
+//   permission Permission @relation(fields: [permissionid], references: [id])
+// }
+
+model UserAuth {
+  id Int @id @default(autoincrement())
+  name String
+  password String
+  email String @unique
+  userdata UserData?
+}
+
+model UserData {
+  id Int @id @default(autoincrement())
+  userid Int @unique
+  user UserAuth @relation(fields: [userid], references: [id])
+  status String // status :: Active or inactive or banned
+  roleid Int
+  role Roles @relation(fields: [roleid], references: [id])
+}
+
+model FinanceData {
+  id Int @id @default(autoincrement())
+  amount Int
+  category String
+  type String
+  date DateTime
+  notes String
+}

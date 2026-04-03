@@ -1,0 +1,107 @@
+[
+  {
+    "amount": 3454,
+    "type": "expense",
+    "category": "shopping",
+    "date": "2025-10-22T16:16:22.458Z",
+    "notes": "Trado temperantia voveo terga ad vis."
+  },
+  {
+    "amount": 6175,
+    "type": "expense",
+    "category": "travel",
+    "date": "2026-03-24T04:36:04.071Z",
+    "notes": "Vestigium adficio nostrum vel mollitia repellat clamo defluo."
+  },
+  {
+    "amount": 8958,
+    "type": "income",
+    "category": "food",
+    "date": "2025-05-09T12:06:04.061Z",
+    "notes": "Solium trans ait vapulus adnuo demo tergiversatio."
+  },
+  {
+    "amount": 3241,
+    "type": "income",
+    "category": "travel",
+    "date": "2025-08-17T09:58:14.496Z",
+    "notes": "Suus abbas compono deporto appono incidunt absconditus conduco eius copia."
+  },
+  {
+    "amount": 4890,
+    "type": "expense",
+    "category": "travel",
+    "date": "2025-09-10T23:07:00.810Z",
+    "notes": "Alveus bibo venia."
+  },
+  {
+    "amount": 244,
+    "type": "expense",
+    "category": "rent",
+    "date": "2025-08-20T14:55:59.329Z",
+    "notes": "Deficio tollo abutor pecco incidunt altus termes supra usus commodo."
+  },
+  {
+    "amount": 3697,
+    "type": "income",
+    "category": "entertainment",
+    "date": "2025-05-08T06:26:21.940Z",
+    "notes": "Coniuratio spectaculum dapifer thesaurus contego."
+  },
+  {
+    "amount": 3744,
+    "type": "expense",
+    "category": "shopping",
+    "date": "2025-06-24T12:12:23.444Z",
+    "notes": "Admiratio cetera cito cultura tantillus tabula denique confido."
+  },
+  {
+    "amount": 6808,
+    "type": "expense",
+    "category": "health",
+    "date": "2025-09-03T01:59:32.889Z",
+    "notes": "Socius degusto vereor astrum creptio claro vetus depraedor."
+  },
+  {
+    "amount": 1789,
+    "type": "expense",
+    "category": "shopping",
+    "date": "2026-01-22T05:52:12.514Z",
+    "notes": "Abbas vere canonicus cibo tepidus."
+  },
+  {
+    "amount": 2536,
+    "type": "expense",
+    "category": "health",
+    "date": "2025-04-25T23:06:44.692Z",
+    "notes": "Dignissimos abundans spectaculum trepide solio cena ustilo tricesimus."
+  },
+  {
+    "amount": 5659,
+    "type": "expense",
+    "category": "rent",
+    "date": "2025-10-13T02:20:31.996Z",
+    "notes": "Argentum depraedor tabesco templum vociferor."
+  },
+  {
+    "amount": 374,
+    "type": "income",
+    "category": "health",
+    "date": "2025-10-21T04:13:43.648Z",
+    "notes": "Arca taceo sumptus paulatim aqua depulso dens."
+  },
+  {
+    "amount": 7486,
+    "type": "income",
+    "category": "entertainment",
+    "date": "2025-10-11T06:54:58.886Z",
+    "notes": "Vulgo alias stabilis autem depulso creator demo adaugeo appono."
+  },
+  {
+    "amount": 350,
+    "type": "income",
+    "category": "shopping",
+    "date": "2025-09-09T22:49:48.499Z",
+    "notes": "Quos capio adstringo viriliter coaegresco canis causa traho adduco."
+  }
+]
