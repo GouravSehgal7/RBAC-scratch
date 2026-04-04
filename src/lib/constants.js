@@ -8,6 +8,7 @@ export const TYPE = {
     income: 'income',
     expense: 'expense'
 };
+export const ROLES = {admin:'admin', viewer:'viewer', analyst:'analyst'}
 export const CATEGORY = {
      salary :"salary",
      food :"food",

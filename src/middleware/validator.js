@@ -32,7 +32,7 @@ const ownershipschema = z.object({
 })
 const updaterolevalschema = z.object({
     email : z.email({error:"wrong email formet in 'from' "}),
-    roleid:z.number({error:"roleid is not a number reqired a number"})
+    roleid:z.coerce.number({error:"roleid is not a number reqired a number"}).int({error:'roleid must be an integer'}).positive({error:"roleid must be positive"})
 })
 const updatestatusvalschema = z.object({
     email : z.email({error:"wrong email formet in 'from' "}),

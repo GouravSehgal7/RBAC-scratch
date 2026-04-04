@@ -105,6 +105,10 @@ export const createrolewithpermission = async (req,res)=>{
 
 export const Assignroletopermission = async (req,res)=>{
     // i will get role and array of permission
+//    {
+//     roleid:2,
+//     permessionidarray:[1,2,3],
+//    } 
     const {roleid , permessionidarray} = req.body;
     try {
         // if role does not exist then return error

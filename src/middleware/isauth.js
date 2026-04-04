@@ -8,7 +8,7 @@ export const isauth = async (req, res, next) => {
             return res.status(401).json({ message: 'No token provided' });
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = await prisma.userData.findUnique({
+        const user = await prisma.userData.findUnique({
             where:{
                 userid:decoded.id,
             },
@@ -20,6 +20,8 @@ export const isauth = async (req, res, next) => {
                 }
             }
         })
+        // user.role.name
+        req.user = user
         if (!req.user) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
