@@ -8,10 +8,6 @@ export const TYPE = {
     income: 'income',
     expense: 'expense'
 };
-export const DEFAULT_PERMISSION_FOR_ADMIN = {
-    attribute : "*",
-    action : "*",
-}
 export const CATEGORY = {
      salary :"salary",
      food :"food",
@@ -21,7 +17,10 @@ export const CATEGORY = {
      health :"health",
      entertainment :"entertainment"
 }
-
+export const DEFAULT_PERMISSION_FOR_ADMIN = {
+    attribute : "*",
+    action : "*",
+}
 export const DEFAULTADMIN = {
     defaultAdminName : 'Super Admin',
     defaultAdminEmail : 'admin@example.com',

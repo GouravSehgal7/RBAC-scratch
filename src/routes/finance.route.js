@@ -12,13 +12,14 @@ import {
     totalincomecontroller,
     monthlycategorycontroller
 } from '../controllers/dashboard.controller.js'
+import { dashboardDataValidator, filterDashboardValidator, paginationValidator } from '../middleware/validator.js';
 
 const router = Express.Router()
 // all are admin and analyst only
 router.get('/',getcompletedata);
-router.post('/',createdata);
-router.get('/filter-by',getfiltereddata);
-router.get('/paginateddata',paginateddataget);
+router.post('/',dashboardDataValidator,createdata);
+router.get('/filter-by',filterDashboardValidator,getfiltereddata);
+router.get('/paginateddata',paginationValidator,paginateddataget);
 // aggregated routes
 router.get('/total-income',totalincomecontroller);
 router.get('/total-expance',totalexpancecontroller);

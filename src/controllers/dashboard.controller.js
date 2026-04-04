@@ -202,7 +202,13 @@ export const categorywisetotalcontroller = async (req,res)=>{
 
 export const monthlytrendscontroller = async (req,res)=>{
     try {
-        const {year} = req.body;
+        const bodySchema = z.object({
+          year: z
+            .number({ required_error: "Year is required", invalid_type_error: "Year must be a number" }).int("Year must be an integer").min(2000, "Year seems too early").max(new Date().getFullYear(), "Year cannot be in the future"),
+        });
+
+        const { year } = bodySchema.parse(req.body); // throws if invalid
+        // const {year} = req.body;
         // based on year 
         // check sum(income) , sum(expence) for each month wise
         // only for salary
@@ -220,6 +226,13 @@ export const monthlytrendscontroller = async (req,res)=>{
             data:trends
         })
     } catch (error) {
+        if (error.errors) {
+          return res.status(400).json({
+            success: false,
+            message: "Validation error",
+            errors: error.errors,
+          });
+        }
          return res.status(500).json({
             success: false,
             message: "Error creating finance data",
@@ -230,7 +243,16 @@ export const monthlytrendscontroller = async (req,res)=>{
 
 export const monthlycategorycontroller = async (req,res)=>{
     try {
-        const {year} = req.body;
+        // const {year} = req.body;
+        const bodySchema = z.object({
+          year: z
+            .number({ required_error: "Year is required", invalid_type_error: "Year must be a number" })
+            .int("Year must be an integer")
+            .min(2000, "Year seems too early")
+            .max(new Date().getFullYear(), "Year cannot be in the future"),
+        });
+
+        const { year } = bodySchema.parse(req.body); // throws if invalid
         const result = await prisma.$queryRaw`
         SELECT strftime('%m',date) AS month, category, SUM(amount)
         FROM financeData
@@ -243,6 +265,13 @@ export const monthlycategorycontroller = async (req,res)=>{
             data:result
         })
     } catch (error) {
+        if (error.errors) {
+          return res.status(400).json({
+            success: false,
+            message: "Validation error",
+            errors: error.errors,
+          });
+        }
         return res.status(500).json({
             success: false,
             message: "Error creating finance data",

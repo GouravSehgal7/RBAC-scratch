@@ -56,5 +56,9 @@ export const updaterolecontroller = async (req,res)=>{
 }
 
 export const transferownership = async(req,res) => {
-    
+    try {
+        const {from,to} = req.body;
+    } catch (error) {
+        
+    }
 }

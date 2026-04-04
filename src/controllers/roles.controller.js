@@ -1,3 +1,4 @@
+import z from 'zod';
 import {prisma} from '../lib/prismaAdaptor.js'
 
 export const getrolescontroller = async (req,res)=>{
@@ -17,7 +18,10 @@ export const getrolescontroller = async (req,res)=>{
 
 export const createrolecontroller = async (req,res)=>{
     try {
-        const {rolename} = req.body;
+        const bodyschema = z.object({
+            rolename: z.string({error:'role name should be string'}),
+        })
+        const {rolename} = bodyschema.parse(req.body);
         const role = await prisma.roles.create({
             data: {
                 name : rolename,
@@ -26,14 +30,25 @@ export const createrolecontroller = async (req,res)=>{
         console.log(JSON.stringify(role,null,2));
         return res.json({ success: true, data: role });
     } catch (error) {
+        if (error.errors) {
+          return res.status(400).json({
+            success: false,
+            message: "Validation error",
+            errors: error.errors,
+          });
+        }
         console.error(error);
-        res.status(500).json({ success: false, message: "Internal server error",error:error });
+        return res.status(500).json({ success: false, message: "Internal server error",error:error });
   }
 }
 
 export const createpermission = async (req,res)=>{
     try {
-        const {attribute,action} = req.body;
+        const bodyschema = z.object({
+            attribute: z.string({error:'attribute name should be string'}),
+            action: z.string({error:'action name should be string'}),
+        })
+        const {attribute,action} = bodyschema.parse(req.body);
         const permission = await prisma.permission.create({
             data: {
                 attribute: attribute,
@@ -44,8 +59,15 @@ export const createpermission = async (req,res)=>{
         console.log(JSON.stringify(permission,null,2));
         return res.json({ success: true, data: permission });
     } catch (error) {
+        if (error.errors) {
+        return res.status(400).json({
+            success: false,
+            message: "Validation error",
+            errors: error.errors,
+          });
+        }
         console.error(error);
-        res.status(500).json({ success: false, message: "Internal server error",error:error });
+        return res.status(500).json({ success: false, message: "Internal server error",error:error });
   }
 }
 
@@ -105,7 +127,7 @@ export const Assignroletopermission = async (req,res)=>{
 }
 
 export const removePermissionsFromRole = async (req, res) => {
-    const roleid = req.params.id
+    const roleid = parseInt(req.params.id)
     const { permissionidarray } = req.body;
     try {
         const updatedRole = await prisma.roles.update({
