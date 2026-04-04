@@ -1,6 +1,6 @@
 
-1,4 have common goal together
-2,3,5,6 have similer goal together
+1,4 have common goal together --------------------------------------------------- done
+2,3,5,6 have similer goal together -------------------------------------------- done
 
 1. User and Role Management
 Assumptions:- 
