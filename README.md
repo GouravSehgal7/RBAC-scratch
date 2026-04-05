@@ -1,3 +1,10 @@
+# NOTE:- STEPS TO RUN PROJECT AND WATCH DOCUMENTATION AND DATABASE DISCRIPTION
+### RUN: npm start
+### DOCS VISIT :: http://localhost:8000/api-docs
+### DATABASE VISIT :: http://localhost:51212
+
+
+
 # Financial Dashboard Backend API
 
 A scalable and role-based backend system for managing financial records, users, and analytics.  
