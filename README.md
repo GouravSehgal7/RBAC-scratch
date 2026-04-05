@@ -1,91 +1,214 @@
-1. Roles
-{
-  "name": "Admin"
-}
+# Financial Dashboard Backend API
 
-{
-  "name": "Admin"
-  "rolepermission": {
-    "connect" : [
-        { "id": 1 }
-    ]
-  }
-}
+A scalable and role-based backend system for managing financial records, users, and analytics.  
+This project is designed with **production-ready architecture**, focusing on **extensibility, maintainability, and fine-grained access control**.
 
-2. Permission
-{
-  "attribute": "finance",
-  "action": "read"
-}
+---
 
-3. Assign Permissions to Role (Many-to-Many)
-{
-  "attribute": "finance",
-  "action": "read",
-  "role": {
-    "connect": [
-      { "id": 1 },
-      { "id": 2 }
-    ]
-  }
-}
+## Overview
 
-4. UserAuth (Signup)
-{
-  id
-  "name": "Gourav",
-  "email": "gourav@example.com",
-  "password": "123456"
-}
+This backend provides a complete system for:
 
-5. UserData (Link user + role)
-{
-  "userid": 1,
-  "status": "Active",
-  "roleid": 1
-}
+- **User and role management (RBAC)**
+- **Financial records handling** (income/expense tracking)
+- **Dashboard analytics and aggregation**
+- **Secure access control**
+- **Validation and error handling**
+- **Scalable architecture for future growth**
 
-6. FinanceData
-{
-  "amount": 5000,
-  "category": "Salary",
-  "type": "income",
-  "date": "2026-04-02T10:00:00.000Z",
-  "notes": "Monthly salary"
-}
+---
 
+## Tech Stack
 
+- **Node.js + Express**
+- **Prisma ORM**
+- **SQLite** (development, easily extensible)
+- **JWT Authentication**
+- **Zod** (Validation)
+- **Swagger** (API Documentation)
 
-<!-- results -->
-<!-- signup -->
-{
-    "message": "User created successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzc1MzY4MzQ4LCJleHAiOjE3NzU0NTQ3NDh9.NsRm9jge2xu4etwMBC-B6zLZ4Jjx-7N1vFTPVFbpC1U",
-    "user": {
-        "id": 3,
-        "name": "evaan",
-        "password": "$2b$10$cEkKmirKp9HAuHL57.SNJuZpy45G71I1SPWFypwuQUXPyG1RxwPXG",
-        "email": "evaan@example.com",
-        "userdata": {
-            "id": 3,
-            "userid": 3,
-            "status": "active",
-            "roleid": 2,
-            "role": {
-                "id": 2,
-                "name": "viewer"
-            }
-        }
-    }
-}
-<!-- admin login -->
-{
-    "message": "Login successful",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc1MzY2ODY4LCJleHAiOjE3NzU0NTMyNjh9.foMsokEG1bmZWryuEKZmp5mZs-qo7UA7TDTE7EtdyTo",
-    "user": {
-        "id": 1,
-        "name": "Super Admin",
-        "password": "$2b$10$HxYbFvyCWP.oi6YHCL4JHuSYz6o6pLsi8GoboSSKZwI75wcv7/J56",
-        "email": "admin@example.com"
-    }
-}
+---
+
+## 1. User & Role Management
+
+The system implements a **Role-Based Access Control (RBAC)** model with extensibility toward fine-grained permissions.
+
+### Features Implemented
+
+- User creation and management  
+- Role assignment and updates  
+- User status management (active/inactive)  
+- Middleware-based access restriction  
+
+### Roles
+
+| Role     | Capabilities                              |
+|----------|------------------------------------------|
+| Viewer   | Read-only access to dashboard data       |
+| Analyst  | Access to records + analytics            |
+| Admin    | Full system access                       |
+
+---
+
+## Advanced Permission System (Extended Capability)
+
+Although not required, the system includes **permission-level APIs** to support **future fine-grained access control**.
+
+### Additional Work Done
+
+- Create permissions  
+- Assign permissions to roles  
+- Remove permissions from roles  
+- Create roles with predefined permissions  
+
+### Why This Matters
+
+This enables:
+
+- Transition from **coarse RBAC → fine-grained RBAC**  
+- Feature-level access control (e.g., `read_dashboard`, `edit_user`)  
+- Easier scaling for enterprise-level authorization  
+
+---
+
+## Future Authorization Scalability
+
+The system design allows integration with advanced authorization models such as:
+
+### OpenFGA (Fine-Grained Authorization)
+
+- Supports **Relationship-Based Access Control (ReBAC)**  
+- Enables **Attribute-Based Access Control (ABAC)**  
+- Allows complex policies like:
+  - “User can edit only their own records”  
+  - “Managers can access team data”  
+  - “Conditional access based on attributes”  
+
+> Current architecture (**middleware + modular RBAC**) makes it straightforward to integrate such systems without major refactoring.
+
+---
+
+## 2. Financial Records Management
+
+Full lifecycle management of financial records.
+
+### Record Fields
+
+- **Amount**  
+- **Type** (income / expense)  
+- **Category**  
+- **Date**  
+- **Notes / description**  
+
+### Supported Operations
+
+- Create records  
+- View records  
+- Update records  
+- Delete records  
+
+### Filtering
+
+- By **date**  
+- By **category**  
+- By **type**  
+
+### Pagination
+
+- Implemented for efficient large dataset handling  
+
+---
+
+## 3. Dashboard Summary APIs
+
+Provides aggregated insights for dashboard visualization.
+
+### Implemented APIs
+
+- Total income  
+- Total expenses  
+- Net balance  
+- Category-wise totals  
+- Monthly trends  
+- Recent activity  
+- Monthly category trends  
+
+### Implementation Highlights
+
+- Optimized aggregation queries  
+- Clean separation of aggregation logic  
+- Designed for **frontend-ready consumption**  
+
+---
+
+## 4. Access Control Logic
+
+Strict backend-level enforcement using layered middleware.
+
+### Middleware Strategy
+
+- `isauth` → Authentication  
+- `isStatusAllowed` → User state validation  
+- `isroleallowed` → Role-based authorization  
+
+### Behavior Enforcement
+
+- **Viewer** → read-only access  
+- **Analyst** → read + analytics access  
+- **Admin** → full system control  
+
+---
+
+## 5. Validation & Error Handling
+
+Ensures reliability and predictable API behavior.
+
+### Features
+
+- Schema validation using **Zod**  
+- Structured error responses  
+- Proper HTTP status codes  
+- Protection against invalid operations  
+
+---
+
+## 6. Data Persistence
+
+- **Prisma ORM** for database abstraction  
+- **SQLite** for development simplicity  
+- Schema-driven design  
+- Easily portable to production-grade databases  
+
+---
+
+## Additional Enhancements Implemented
+
+Beyond the base requirements, the following improvements were added:
+
+### Authentication
+
+- JWT-based secure authentication  
+- Token-based request validation  
+
+### API Documentation
+
+- Swagger UI integration  
+- Structured endpoint grouping  
+- Read-only documentation support for production  
+
+### Pagination & Filtering
+
+- Efficient pagination for records  
+- Flexible filtering system  
+
+### RBAC + Permission Hybrid Model
+
+- Role-based + permission-based system  
+- Future-ready authorization design  
+
+### Ownership Transfer Logic
+
+- Supports transferring ownership of data between users  
+- Useful for administrative workflows  
+
+---

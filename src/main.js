@@ -11,5 +11,4 @@ app.use('/api/role/v1',roleroute)
 app.use('/api/userhandler',userhandlerroute)
 app.use('/api/dashboard',dashboardroute);
 
-
 export default app
