@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start:backend": "nodemon index.js",
+      "start:prisma": "prisma studio",
+      "start": "concurrently \"npm run start:backend\" \"npm run start:prisma\""
   },
   "prisma": {
     "seed": "node src/prisma/seed.js"

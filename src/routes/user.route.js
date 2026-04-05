@@ -1,3 +1,18 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Users
+ *     description: All Users related APIs
+ *
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+
 import Express from 'express';
 import { getallusercontroller,getuserbyidcontroller,updaterolecontroller,updateuserstatuscontroller,transferownership } from "../controllers/user.controller.js";
 import { ownershipValidator, updateRoleValidator, updateStatusValidator } from '../middleware/validator.js';

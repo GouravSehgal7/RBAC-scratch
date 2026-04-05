@@ -1,3 +1,18 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Dashboard
+ *     description: All dashboard related APIs
+ *
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+
 import Express from 'express'
 import {
     categorywisetotalcontroller,
@@ -50,7 +65,8 @@ router.get('/', isauth, accessdashboarddataread, getcompletedata);
  *               type: income
  *               amount: 5000
  *               category: salary
- *               note: Monthly salary
+ *               date: 2026-03-24T04:36:04.071Z
+ *               notes: Monthly salary
  *     responses:
  *       201:
  *         description: Data created
@@ -162,6 +178,14 @@ router.get('/category-wise-total',isauth,isStatusAllowed([STATUS.active]),isrole
  *     tags: [Dashboard]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: year
+ *         schema:
+ *           type: integer
+ *           example: 2025
+ *         required: true
+ *         description: Year for which monthly trends are fetched
  *     responses:
  *       200:
  *         description: Monthly trends data
@@ -173,6 +197,7 @@ router.get('/monthly-trends',isauth,isStatusAllowed([STATUS.active]),isroleallow
  *   get:
  *     summary: Get recent activity
  *     tags: [Dashboard]
+ *  
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -188,6 +213,14 @@ router.get('/recent-activity',isauth,isStatusAllowed([STATUS.active]), isroleall
  *     tags: [Dashboard]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: year
+ *         schema:
+ *           type: integer
+ *           example: 2025
+ *         required: true
+ *         description: Year for which monthly trends are fetched
  *     responses:
  *       200:
  *         description: Monthly category trends

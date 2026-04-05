@@ -25,10 +25,10 @@ const router = Express.Router()
  *             properties:
  *               email:
  *                 type: string
- *                 example: user@mail.com
+ *                 example: admin@example.com
  *               password:
  *                 type: string
- *                 example: 123456
+ *                 example: Admin123!
  *     responses:
  *       200:
  *         description: Login successful
@@ -54,9 +54,9 @@ router.post('/login', loginValidator, isloginallowed, logincontroller);
  *             required:
  *               - email
  *               - password
- *               - username
+ *               - name
  *             properties:
- *               username:
+ *               name:
  *                 type: string
  *                 example: johndoe
  *               email:

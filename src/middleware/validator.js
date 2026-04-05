@@ -39,8 +39,8 @@ const updatestatusvalschema = z.object({
     status:z.enum(Object.values(STATUS),{error:'status not valid'}),
 })
 const paginationschema = z.object({
-    skip : z.number({error:"an integer number is required"}),
-    limit: z.number({error:"an integer number is required"})
+    skip : z.coerce.number({error:"an integer number is required"}),
+    limit: z.coerce.number({error:"an integer number is required"})
 })
 const rolewithpermissionschema = z.object({
     rolename: z.string(),
@@ -77,7 +77,7 @@ const validatebody = (schema) => (req, res, next) => {
 
 const validatequery = (schema) => (req, res, next) => {
   try {
-    req.query = schema.parse(req.query);
+    req.validatedQuery  = schema.parse(req.query);
     next();
   } catch (err) {
     if (err.errors) {
@@ -90,6 +90,7 @@ const validatequery = (schema) => (req, res, next) => {
     return res.status(500).json({
       success: false,
       message: "Internal server error",
+      place:"query middleware",
       error: err.message,
     });
   }
@@ -102,7 +103,7 @@ export const filterDashboardValidator = validatequery(filterdashboardschema);
 export const ownershipValidator = validatebody(ownershipschema);
 export const updateRoleValidator = validatebody(updaterolevalschema);
 export const updateStatusValidator = validatebody(updatestatusvalschema);
-export const paginationValidator = validatebody(paginationschema);
+export const paginationValidator = validatequery(paginationschema);
 export const roleWithPermissionValidator = validatebody(rolewithpermissionschema);
 export const assignPermissionValidator = validatebody(Assignpermissionschema);
 export const removePermissionValidator = validatebody(removePermissionsFromRoleschema);

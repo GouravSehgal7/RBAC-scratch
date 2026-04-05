@@ -52,7 +52,7 @@ export const createdata = async (req,res)=>{
 
 export const getfiltereddata = async (req, res) => {
     try {
-        const { type, category, startDate, endDate } = req.query;
+        const { type, category, startDate, endDate } = req.validatedQuery ;
         const where = {};
         if (type) where.type = type;
         if (category) where.category = category;
@@ -88,7 +88,7 @@ export const getfiltereddata = async (req, res) => {
 export const paginateddataget = async (req,res)=>{
 // skip and limit
     try {
-        const {skip,limit} = req.body;
+        const {skip,limit} = req.Pagedata;
         const data = await prisma.financeData.findMany({
             skip:skip,
             take:limit
@@ -204,11 +204,10 @@ export const categorywisetotalcontroller = async (req,res)=>{
 export const monthlytrendscontroller = async (req,res)=>{
     try {
         const bodySchema = z.object({
-          year: z
-            .number({ required_error: "Year is required", invalid_type_error: "Year must be a number" }).int("Year must be an integer").min(2000, "Year seems too early").max(new Date().getFullYear(), "Year cannot be in the future"),
+          year: z.coerce.number({ required_error: "Year is required", invalid_type_error: "Year must be a number" }).int("Year must be an integer").min(2000, "Year seems too early").max(new Date().getFullYear(), "Year cannot be in the future"),
         });
 
-        const { year } = bodySchema.parse(req.body); // throws if invalid
+        const { year } = bodySchema.parse(req.query); // throws if invalid
         // const {year} = req.body;
         // based on year 
         // check sum(income) , sum(expence) for each month wise
@@ -254,14 +253,14 @@ export const monthlycategorycontroller = async (req,res)=>{
     try {
         // const {year} = req.body;
         const bodySchema = z.object({
-          year: z
+          year: z.coerce
             .number({ required_error: "Year is required", invalid_type_error: "Year must be a number" })
             .int("Year must be an integer")
             .min(2000, "Year seems too early")
             .max(new Date().getFullYear(), "Year cannot be in the future"),
         });
 
-        const { year } = bodySchema.parse(req.body); // throws if invalid
+        const { year } = bodySchema.parse(req.query); // throws if invalid
         const start = new Date(`${year}-01-01`);
         const end = new Date(`${year}-12-31`);
         const result = await prisma.$queryRaw`

@@ -1,3 +1,18 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: RBAC
+ *     description: All RBAC related APIs
+ *
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+
 import Express from 'express'
 import {Assignroletopermission,createpermission, createrolecontroller,createrolewithpermission,deletepermission,getrolescontroller, removePermissionsFromRole} from '../controllers/roles.controller.js'
 import { assignPermissionValidator, removePermissionValidator, roleWithPermissionValidator } from '../middleware/validator.js';
