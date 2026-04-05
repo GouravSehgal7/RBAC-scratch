@@ -1,6 +1,6 @@
 import { STATES } from "mongoose";
-import { STATUS } from "../lib/constants";
-import { prisma } from "../lib/prismaAdaptor";
+import { STATUS } from "../lib/constants.js";
+import { prisma } from "../lib/prismaAdaptor.js";
 
 
 export const isStatusAllowed = (allowedstatus = [])=>{
@@ -65,14 +65,15 @@ export const accessdashboarddataread=(req,res,next)=>{
 export const isloginallowed = async (req,res,next)=>{
     const {email} = req.body;
     try {
-        const user = await prisma.userData.findUnique({
+        const user = await prisma.userAuth.findUnique({
             where:{
-                user:{
-                    email:email
-                }
+                email:email
+            },
+            include:{
+                userdata:true
             }
         })
-        const status = user.status;
+        const status = user.userdata.status;
         if(status === STATUS.block){
             return res.status(403).json({
                 msg: "Blocked users cannot access"
@@ -82,7 +83,8 @@ export const isloginallowed = async (req,res,next)=>{
     } catch (error) {
         return res.status(500).json({
             success : false,
-            error : error
+            place:"error at isloginallowed middleware",
+            error : error.message
         })
     }
     

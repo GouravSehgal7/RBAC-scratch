@@ -19,7 +19,6 @@ model Roles {
   users UserData[]
   rolepermission Permission[]
 }
-
 model Permission {
   id Int @id @default(autoincrement())
   attribute String
@@ -27,15 +26,6 @@ model Permission {
   role Roles[]
   @@unique([attribute,action])
 }
-
-// model RolePermission {
-//   id Int @id @default(autoincrement())
-//   roleid Int
-//   permissionid Int
-//   role Roles @relation(fields: [roleid], references: [id])
-//   permission Permission @relation(fields: [permissionid], references: [id])
-// }
-
 model UserAuth {
   id Int @id @default(autoincrement())
   name String
@@ -43,7 +33,6 @@ model UserAuth {
   email String @unique
   userdata UserData?
 }
-
 model UserData {
   id Int @id @default(autoincrement())
   userid Int @unique
@@ -52,7 +41,6 @@ model UserData {
   roleid Int
   role Roles @relation(fields: [roleid], references: [id])
 }
-
 model FinanceData {
   id Int @id @default(autoincrement())
   amount Int

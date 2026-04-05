@@ -20,7 +20,7 @@ for (let i = 1; i <= 15; i++) {
       "health",
       "entertainment"
     ]),
-    date: faker.date.past(),
+    date: faker.date.past().toISOString(),
     notes: faker.lorem.sentence(),
   });
 }

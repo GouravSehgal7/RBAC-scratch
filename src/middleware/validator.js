@@ -1,13 +1,13 @@
 import {z} from 'zod'
-import { CATEGORY, STATUS, TYPE } from '../lib/constants';
+import { CATEGORY, STATUS, TYPE } from '../lib/constants.js';
 
-const emailRegex = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
+// const emailRegex = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
 const loginschema = z.object({
-    email:z.email({pattern:emailRegex,error:'Email not valid'}),
+    email:z.email({error:'Email not valid'}),
     password : z.string().min(6,"Password must be at least 6 chars")
 })
 const signupschema = z.object({
-    sername: z.string().min(3, "Username must be at least 3 chars"),
+    name: z.string().min(3, "Username must be at least 3 chars"),
     email: z.email({error:"email not valid"}),
     password: z.string().min(6, "Password must be at least 6 chars"),
 })
@@ -69,6 +69,7 @@ const validatebody = (schema) => (req, res, next) => {
     return res.status(500).json({
       success: false,
       message: "Internal server error",
+      place:"inside body middleware",
       error: err.message,
     });
   }

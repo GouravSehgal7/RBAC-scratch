@@ -1,4 +1,4 @@
-[
+export const DEFAULT_DATA = [
   {
     "amount": 3454,
     "type": "expense",

@@ -3,6 +3,7 @@ import { getallusercontroller,getuserbyidcontroller,updaterolecontroller,updateu
 import { ownershipValidator, updateRoleValidator, updateStatusValidator } from '../middleware/validator.js';
 import { ROLES,STATUS } from '../lib/constants.js';
 import { isauth } from '../middleware/isauth.js';
+import { isStatusAllowed,isroleallowed } from '../middleware/accesscontrol.middleware.js';
 
 
 const router = Express.Router()

@@ -5,7 +5,7 @@ import { isloginallowed } from '../middleware/accesscontrol.middleware.js';
 const router = Express.Router()
 // all user will login/ signup by default as viewer only admin will promote them to analyst or admin from his apis
 
-router.post('/login',isloginallowed,loginValidator,logincontroller); // all
+router.post('/login',loginValidator,isloginallowed,logincontroller); // all
 router.post('/signup',signupValidator,signupcontroller); // all
 
 

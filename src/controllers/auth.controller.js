@@ -2,6 +2,7 @@ import "dotenv/config"
 import jwt from 'jsonwebtoken'
 import {prisma} from '../lib/prismaAdaptor.js'
 import bcrypt from 'bcrypt'
+import { ROLES, STATUS } from "../lib/constants.js"
 
 export const logincontroller = async (req,res)=>{
     try {
@@ -15,13 +16,13 @@ export const logincontroller = async (req,res)=>{
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const isMatch =  bcrypt.compare(password,user.password)
+        const isMatch = await bcrypt.compare(password,user.password)
 
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET,{ expiresIn: "1d" });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET,{ expiresIn: "1d" });
 
         return res.status(200).json({ message: 'Login successful', token , user });
     } catch (error) {
@@ -44,7 +45,7 @@ export const signupcontroller = async (req,res)=>{
         }
         let pass = await bcrypt.hash(password,10);
         const defaultRole = await prisma.roles.findFirst({
-            where: { name: "Viewer" }
+            where: { name: ROLES.viewer }
         });
 
         if (!defaultRole) {
@@ -59,7 +60,7 @@ export const signupcontroller = async (req,res)=>{
                 password : pass,
                 userdata : {
                     create : {
-                        status : "ACTIVE",
+                        status : STATUS.active,
                         roleid: defaultRole.id
                     }
                 }

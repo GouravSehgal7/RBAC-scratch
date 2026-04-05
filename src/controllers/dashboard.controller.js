@@ -1,5 +1,6 @@
 import {prisma} from '../lib/prismaAdaptor.js'
-
+import {TYPE} from '../lib/constants.js'
+import z from 'zod';
 export const getcompletedata = async (req, res) => {
   try {
     const data = await prisma.financeData.findMany();
@@ -110,7 +111,7 @@ export const totalincomecontroller = async (req,res)=>{
         // filter where category as income 
         const result = await prisma.financeData.aggregate({
             where: {
-                type : "INCOME"
+                type : TYPE.income
             },
             _sum : {amount: true}
         })
@@ -132,7 +133,7 @@ export const totalexpancecontroller = async (req,res)=>{
         // filter where category as income 
         const result = await prisma.financeData.aggregate({
             where: {
-                type : "EXPENCE"
+                type : TYPE.expense
             },
             _sum : {amount: true}
         })
@@ -158,23 +159,23 @@ export const getnetbalance = async (req,res)=>{
         let income = 0;
         let expance = 0;
         result.forEach(d =>{
-            if(d.type === "INCOME"){
-                income = d._sum;
-            }else if(d.type === "EXPANCE"){
-                expance = d._sum;
+            if(d.type ===TYPE.income ){
+                income = d._sum.amount;
+            }else if(d.type === TYPE.expense){
+                expance = d._sum.amount;
             }
         })
-        const netbalance = income-expance
+        const netbalance = income-expance;
         return res.status(200).json({
             success: true,
             income,
-            expense,
+            expance,
             netbalance
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: "Error creating finance data",
+            message: "Server Error",
             error: error.message
         });
     }
@@ -212,25 +213,33 @@ export const monthlytrendscontroller = async (req,res)=>{
         // based on year 
         // check sum(income) , sum(expence) for each month wise
         // only for salary
+        const start = new Date(`${year}-01-01`);
+        const end = new Date(`${year}-12-31`);
         const trends = await prisma.$queryRaw`
-            SELECT strftime('%m',date) AS month ,
-            SUM(CASE WHEN type = 'INCOME' THEN amount ELSE 0 END) AS total_income
-            SUM(CASE WHEN type = 'EXPENCE' THEN amount ELSE 0 END) AS total_expence
+            SELECT strftime('%Y-%m',date) AS month ,
+            CAST(SUM(CASE WHEN type = ${TYPE.income} THEN amount ELSE 0 END) AS INTEGER) AS total_income,
+            CAST(SUM(CASE WHEN type = ${TYPE.expense} THEN amount ELSE 0 END) AS INTEGER) AS total_expense
             from financeData
-            WHERE strftime('%y',date)=${year}
+            WHERE date BETWEEN ${start} AND ${end}
             GROUP BY month
             ORDER BY month;
         `;
-        return res.status(200).json9({
+        const formattedTrends = trends.map(item => ({
+          month: item.month,
+          total_income: Number(item.total_income),
+          total_expense: Number(item.total_expense),
+        }));
+        // console.log();
+        return res.status(200).json({
             success: true,
-            data:trends
+            data:formattedTrends
         })
     } catch (error) {
         if (error.errors) {
           return res.status(400).json({
             success: false,
             message: "Validation error",
-            errors: error.errors,
+            errors: error.message,
           });
         }
          return res.status(500).json({
@@ -253,16 +262,22 @@ export const monthlycategorycontroller = async (req,res)=>{
         });
 
         const { year } = bodySchema.parse(req.body); // throws if invalid
+        const start = new Date(`${year}-01-01`);
+        const end = new Date(`${year}-12-31`);
         const result = await prisma.$queryRaw`
-        SELECT strftime('%m',date) AS month, category, SUM(amount)
+        SELECT strftime('%m',date) AS month, category, SUM(amount) AS total_expense
         FROM financeData
-        WHERE strftime('%y',date) = ${year}
+        WHERE date BETWEEN ${start} AND ${end}
         GROUP BY month,category
-        ORDER BY month
         `
+        const formattedTrends = result.map(item => ({
+            month: item.month,
+            category: item.category,
+            total_expense: Number(item.total_expense),
+        }));
         return res.status(200).json({
             success: true,
-            data:result
+            data:formattedTrends
         })
     } catch (error) {
         if (error.errors) {
