@@ -3,7 +3,9 @@
 ### DOCS VISIT :: http://localhost:8000/api-docs
 ### DATABASE VISIT :: http://localhost:51212
 
-
+#### make a .env file and add this
+ - DATABASE_URL="file:./src/prisma/dev.db"
+ - JWT_SECRET = "abce"
 
 # Financial Dashboard Backend API
 
